@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nearest Chain Location</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Find the Nearest Chain Location</h1>
+    <form method="POST" id="myForm">
+        <div id="inputFields">
+            <label for="person1">Person 1 Address:</label><br>
+            <input type="text" id="person1" name="person"><br>
+        </div>
+        <button type="button" onclick="addInputField()">Add Person</button>
+        <button type="button" onclick="removeInputField()">Remove Person</button><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% if result %}
+    <h2>Most Central Location:</h2>
+    <p>{{ result }}</p>
+    {% endif %}
+
+    <script>
+        let personCount = 2;
+    
+        function addInputField() {
+            const div = document.createElement('div');
+    
+            const label = document.createElement('label');
+            label.setAttribute('for', `person${personCount}`);
+            label.innerText = `Person ${personCount} Address:`;
+    
+            const input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute('id', `person${personCount}`);
+            input.setAttribute('name', 'person');
+    
+            div.appendChild(label);
+            div.appendChild(document.createElement('br'));
+            div.appendChild(input);
+            div.appendChild(document.createElement('br'));
+    
+            document.getElementById('inputFields').appendChild(div);
+    
+            personCount++;
+        }
+    
+        function removeInputField() {
+            if (personCount > 2) {
+                const div = document.getElementById(`person${personCount - 1}`).parentNode;
+                div.parentNode.removeChild(div);
+                personCount--;
+            }
+        }
+    </script>
+    
+</body>
+</html>
