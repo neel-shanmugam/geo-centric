@@ -50,7 +50,7 @@ def home():
             total_time = sum(times)
             max_time = max(times)
             score = total_time * 0.7 + max_time * 0.3  # weight total driving time more than maximum individual driving time
-            location_scores.append((gym, score, individual_times))
+            location_scores.append((gym, int(score), individual_times))
 
         # Sort locations by score and select the top 5
         best_locations = sorted(location_scores, key=lambda x: x[1])[:5]
