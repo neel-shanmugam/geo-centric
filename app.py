@@ -8,44 +8,40 @@ gmaps = googlemaps.Client(key='[API-KEY]]')
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        chain = 'LA Fitness'
-        person_locations = []
-        persons = request.form.getlist('person')  # Get the list of people from form
+        fitness_center = 'LA Fitness'
+        individual_locations = []
+        individuals = request.form.getlist('individual')
 
-        # Get the latitude and longitude of each person's location
-        for person in persons:
-            geocode_result = gmaps.geocode(person)
-            person_location = geocode_result[0]['geometry']['location']
-            person_locations.append(person_location)
+        for individual in individuals:
+            geocode_result = gmaps.geocode(individual)
+            individual_location = geocode_result[0]['geometry']['location']
+            individual_locations.append(individual_location)
 
-        # Find the centroid of all locations
-        centroid_lat = mean([location['lat'] for location in person_locations])
-        centroid_lng = mean([location['lng'] for location in person_locations])
+        centroid_lat = mean([location['lat'] for location in individual_locations])
+        centroid_lng = mean([location['lng'] for location in individual_locations])
         centroid = {'lat': centroid_lat, 'lng': centroid_lng}
-        print(centroid)
 
-        # Find LA Fitness locations near the centroid
-        places_result = gmaps.places_nearby(location=centroid, keyword=chain, radius=50000)
-        chain_locations = [(place['vicinity'], place['geometry']['location']) for place in places_result['results']]
-        print(chain_locations)
+        places_result = gmaps.places_nearby(location=centroid, keyword=fitness_center, radius=50000)
+        fitness_locations = [(place['vicinity'], place['geometry']['location']) for place in places_result['results']]
 
-        min_time_deviation = float('inf')
-        central_location = None
+        least_time_deviation = float('inf')
+        central_place = None
+        individual_times = {}
 
-        for gym, gym_location in chain_locations:
+        for gym, gym_location in fitness_locations:
             times = []
-            for person_location in person_locations:
-                result = gmaps.distance_matrix(origins=person_location, destinations=[gym_location], mode='driving')
-                time = result['rows'][0]['elements'][0]['duration']['value']  # Use 'duration' for driving time
+            for individual, individual_location in zip(individuals, individual_locations):
+                result = gmaps.distance_matrix(origins=individual_location, destinations=[gym_location], mode='driving')
+                time = result['rows'][0]['elements'][0]['duration']['value']
                 times.append(time)
-                print(gym, person_location, time)
+                individual_times[individual] = time
 
-            time_deviation = pstdev(times)  # Calculate standard deviation of times
-            if time_deviation < min_time_deviation:
-                min_time_deviation = time_deviation
-                central_location = gym
+            time_deviation = pstdev(times)
+            if time_deviation < least_time_deviation:
+                least_time_deviation = time_deviation
+                central_place = gym
 
-        return render_template('home.html', result=central_location)
+        return render_template('home.html', result=central_place, individual_times=individual_times)
 
     return render_template('home.html')
 
