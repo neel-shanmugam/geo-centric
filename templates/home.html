@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nearest Chain Location</title>
+    <title>Closest Fitness Center</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Find the Nearest Chain Location</h1>
+    <h1>Determine the Closest Fitness Center</h1>
     <form method="POST" id="myForm">
         <div id="inputFields">
-            <label for="person1">Person 1 Address:</label><br>
-            <input type="text" id="person1" name="person"><br>
+            <label for="individual1">Individual 1 Address:</label><br>
+            <input type="text" id="individual1" name="individual"><br>
         </div>
-        <button type="button" onclick="addInputField()">Add Person</button>
-        <button type="button" onclick="removeInputField()">Remove Person</button><br>
+        <button type="button" onclick="addInputField()">Add Individual</button>
+        <button type="button" onclick="removeInputField()">Remove Individual</button><br>
         <input type="submit" value="Submit">
     </form>
     {% if result %}
     <h2>Most Central Location:</h2>
     <p>{{ result }}</p>
+    <h2>Driving Times:</h2>
+    {% for individual, time in individual_times.items() %}
+    <p>{{ individual }}: {{ time }} seconds</p>  <!-- Display driving time for each individual -->
+    {% endfor %}
     {% endif %}
 
     <script>
-        let personCount = 2;
+        let individualCount = 2;
     
         function addInputField() {
             const div = document.createElement('div');
     
             const label = document.createElement('label');
-            label.setAttribute('for', `person${personCount}`);
-            label.innerText = `Person ${personCount} Address:`;
+            label.setAttribute('for', `individual${individualCount}`);
+            label.innerText = `Individual ${individualCount} Address:`;
     
             const input = document.createElement('input');
             input.setAttribute('type', 'text');
-            input.setAttribute('id', `person${personCount}`);
-            input.setAttribute('name', 'person');
+            input.setAttribute('id', `individual${individualCount}`);
+            input.setAttribute('name', 'individual');
     
             div.appendChild(label);
             div.appendChild(document.createElement('br'));
@@ -42,17 +46,16 @@
     
             document.getElementById('inputFields').appendChild(div);
     
-            personCount++;
+            individualCount++;
         }
     
         function removeInputField() {
-            if (personCount > 2) {
-                const div = document.getElementById(`person${personCount - 1}`).parentNode;
+            if (individualCount > 2) {
+                const div = document.getElementById(`individual${individualCount - 1}`).parentNode;
                 div.parentNode.removeChild(div);
-                personCount--;
+                individualCount--;
             }
         }
     </script>
-    
 </body>
 </html>
