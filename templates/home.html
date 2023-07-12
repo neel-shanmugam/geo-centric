@@ -15,12 +15,14 @@
         <button type="button" onclick="removeInputField()">Remove Individual</button><br>
         <input type="submit" value="Submit">
     </form>
-    {% if result %}
-    <h2>Most Central Location:</h2>
-    <p>{{ result }}</p>
-    <h2>Driving Times:</h2>
-    {% for individual, time in individual_times.items() %}
-    <p>{{ individual }}: {{ time }} seconds</p>  <!-- Display driving time for each individual -->
+    {% if best_locations %}
+    <h2>Top 5 Locations:</h2>
+    {% for location, score, times in best_locations %}
+    <h3>{{ location }}</h3>
+    <p>Score: {{ score }}</p>
+    {% for individual, time in times.items() %}
+    <p>{{ individual }}: {{ time }} seconds</p>
+    {% endfor %}
     {% endfor %}
     {% endif %}
 
@@ -59,3 +61,4 @@
     </script>
 </body>
 </html>
+
