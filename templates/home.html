@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Closest Fitness Center</title>
+    <title>Closest Location Search</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Determine the Closest Fitness Center</h1>
+    <h1>Find Closest Locations of Interest</h1>
     <form method="POST" id="myForm">
+        <label for="apikey">API Key:</label><br>
+        <input type="text" id="apikey" name="apikey" required><br>
+
+        <label for="place">Place of Interest:</label><br>
+        <input type="text" id="place" name="place" required><br>
+
         <div id="inputFields">
             <label for="individual1">Individual 1 Address:</label><br>
-            <input type="text" id="individual1" name="individual"><br>
+            <input type="text" id="individual1" name="individual" required><br>
         </div>
         <button type="button" onclick="addInputField()">Add Individual</button>
         <button type="button" onclick="removeInputField()">Remove Individual</button><br>
@@ -21,7 +27,7 @@
     <h3>{{ location }}</h3>
     <p>Score: {{ score }}</p>
     {% for individual, time in times.items() %}
-    <p>{{ individual }}: {{ time }} seconds</p>
+    <p>{{ individual }}: {{ time }}</p>
     {% endfor %}
     {% endfor %}
     {% endif %}
