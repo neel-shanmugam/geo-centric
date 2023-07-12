@@ -1,69 +1,70 @@
-/* styles.css */
-
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #E3F2FD; /* Sky Blue */
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    color: #3C3C3C;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 h1 {
     text-align: center;
-    color: #1A237E; /* Earth Green */
+    color: #3C3C3C;
+    padding: 30px 0;
+    font-size: 2em;
 }
 
 form {
-    margin-bottom: 20px;
-}
-
-#inputFields {
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 label {
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 1.2em;
 }
 
 input[type="text"] {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 8px;
-    background-color: #FFFFFF; /* White */
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    transition: border-color 0.3s;
+    font-size: 1.2em;
 }
 
-button {
-    padding: 10px 20px;
-    margin-right: 10px;
-    
-    border: none;
-    border-radius: 20px;
-    background-color: #1A237E; /* Earth Green */
-    color: #FFFFFF; /* White */
-    cursor: pointer;
+input[type="text"]:focus {
+    border-color: #6C63FF;
 }
 
-button:hover {
-    background-color: #0D47A1; /* Darker Earth Green on hover */
-}
-
-input[type="submit"] {
+button, input[type="submit"] {
+    padding: 15px;
     margin-top: 10px;
-    padding: 10px 20px;
     border: none;
-    border-radius: 20px;
-    background-color: #1A237E; /* Earth Green */
-    color: #FFFFFF; /* White */
+    border-radius: 25px;
+    background-color: #6C63FF;
+    color: #FFFFFF;
+    transition: background-color 0.3s;
     cursor: pointer;
+    font-size: 1.2em;
 }
 
-input[type="submit"]:hover {
-    background-color: #0D47A1; /* Darker Earth Green on hover */
+button:hover, input[type="submit"]:hover {
+    background-color: #4a44ce;
 }
 
 h2 {
-    margin-bottom: 10px;
-    color: #1A237E; /* Earth Green */
+    color: #3C3C3C;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
 }
 
 ul {
@@ -72,6 +73,50 @@ ul {
 }
 
 li {
-    margin-bottom: 5px;
-    color: #000000; /* Black */
+    padding: 10px 0;
+    color: #3C3C3C;
+    font-size: 1.2em;
+}
+
+div[id^='individual'] {
+    margin-bottom: 10px;
+}
+
+.card {
+    background: #FFF;
+    border-radius: 20px;
+    box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    margin: 5px 0;
+}
+
+.card .score {
+    color: #6C63FF;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    label, input[type="text"], button, input[type="submit"], h2, li {
+        font-size: 1em;
+    }
+
+    input[type="text"], button, input[type="submit"] {
+        padding: 10px;
+    }
 }

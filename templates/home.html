@@ -1,36 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Closest Fitness Center</title>
+    <title>Closest Location Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Determine the Closest Fitness Center</h1>
-    <form method="POST" id="myForm">
-        <div id="inputFields">
-            <label for="individual1">Individual 1 Address:</label><br>
-            <input type="text" id="individual1" name="individual"><br>
+    <div class="container">
+        <h1>Find Closest Locations of Interest</h1>
+        <form method="POST" id="myForm">
+            <label for="apikey">API Key:</label>
+            <input type="text" id="apikey" name="apikey" required>
+
+            <label for="place">Place of Interest:</label>
+            <input type="text" id="place" name="place" required>
+
+            <div id="individual1">
+                <label for="individual1">Individual 1 Address:</label>
+                <input type="text" id="individual1" name="individual" required>
+            </div>
+            
+            <button type="button" onclick="addInputField()">Add Individual</button>
+            <button type="button" onclick="removeInputField()">Remove Individual</button>
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if best_locations %}
+        <div>
+            <h2>Top Locations:</h2>
+            {% for location, score, times in best_locations %}
+            <div class="card">
+                <h3>{{ location }}</h3>
+                <p class="score">Score: {{ score }}</p>
+                {% for individual, time in times.items() %}
+                <p>{{ individual }}: {{ time }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
         </div>
-        <button type="button" onclick="addInputField()">Add Individual</button>
-        <button type="button" onclick="removeInputField()">Remove Individual</button><br>
-        <input type="submit" value="Submit">
-    </form>
-    {% if best_locations %}
-    <h2>Top 5 Locations:</h2>
-    {% for location, score, times in best_locations %}
-    <h3>{{ location }}</h3>
-    <p>Score: {{ score }}</p>
-    {% for individual, time in times.items() %}
-    <p>{{ individual }}: {{ time }} seconds</p>
-    {% endfor %}
-    {% endfor %}
-    {% endif %}
+        {% endif %}
+    </div>
 
     <script>
         let individualCount = 2;
     
         function addInputField() {
             const div = document.createElement('div');
+            div.id = `individual${individualCount}`;
     
             const label = document.createElement('label');
             label.setAttribute('for', `individual${individualCount}`);
@@ -42,18 +58,16 @@
             input.setAttribute('name', 'individual');
     
             div.appendChild(label);
-            div.appendChild(document.createElement('br'));
             div.appendChild(input);
-            div.appendChild(document.createElement('br'));
     
-            document.getElementById('inputFields').appendChild(div);
+            document.getElementById('myForm').insertBefore(div, document.querySelector('button'));
     
             individualCount++;
         }
     
         function removeInputField() {
             if (individualCount > 2) {
-                const div = document.getElementById(`individual${individualCount - 1}`).parentNode;
+                const div = document.getElementById(`individual${individualCount - 1}`);
                 div.parentNode.removeChild(div);
                 individualCount--;
             }
@@ -61,4 +75,3 @@
     </script>
 </body>
 </html>
-
