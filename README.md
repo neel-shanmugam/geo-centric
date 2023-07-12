@@ -9,12 +9,13 @@ Prerequisites
 
 Getting Started
 Clone the repository:
+
 git clone https://github.com/<username>/GeoCentric.git
+
 cd GeoCentric
 
 Install the required Python packages:
 pip install flask googlemaps
-Replace [API-KEY] in app.py with your Google Maps API key.
 
 Run the Flask application:
 python3 app.py
@@ -22,6 +23,8 @@ python3 app.py
 Now, you should be able to see your application running at http://127.0.0.1:5000/ in your web browser.
 
 Usage
+Input a Google Maps API Key.
+Enter a location of interest.
 Enter the addresses of all individuals.
 Click on the 'Submit' button.
 The application will display the most centrally located chain, considering all provided addresses.
