@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Help Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container help">
+        <h1>Help</h1>
+        <a href="/" class="back-button">Back to Home</a>
+        <p>This website helps you find the <em>closest locations of interest</em> based on multiple individual addresses. Here's how to use it:</p>
+        <ul>
+            <li>Enter your <em>Google Maps API key</em>.</li>
+            <li>Enter your <em>place of interest</em> (e.g., "fitness center").</li>
+            <li>Enter the <em>address</em> of each individual.</li>
+            <li>For each individual, you can choose whether or not to consider <em>routes with tolls</em>. Check the box if you want to consider routes with tolls.</li>
+            <li>You can <em>add</em> and <em>remove individuals</em> using the "Add Individual" and "Remove Individual" buttons.</li>
+            <li>When you're ready, click <em>"Submit"</em> to find the best locations.</li>
+        </ul>
+    </div>
+</body>
+

@@ -23,6 +23,9 @@ def home():
 
         gmaps = googlemaps.Client(key=apikey)
 
+        avoid_tolls = bool(request.form.get('toll'))
+        avoid_highways = bool(request.form.get('highway'))
+
         for individual in individuals:
             geocode_result = gmaps.geocode(individual)
             individual_location = geocode_result[0]['geometry']['location']
@@ -34,6 +37,9 @@ def home():
 
         max_distance = max(calculate_distance(loc1, loc2) for loc1 in individual_locations for loc2 in individual_locations)
 
+        if max_distance > 50000:
+            max_distance = 50000
+
         places_result = gmaps.places_nearby(location=centroid, keyword=fitness_center, radius=max_distance)
         fitness_locations = [(place['vicinity'], place['geometry']['location']) for place in places_result['results']]
 
@@ -42,7 +48,10 @@ def home():
             individual_times = {}
             times = []
             for individual, individual_location in zip(individuals, individual_locations):
-                result = gmaps.distance_matrix(origins=individual_location, destinations=[gym_location], mode='driving')
+                if avoid_tolls:
+                    result = gmaps.distance_matrix(origins=individual_location, destinations=[gym_location], mode='driving', avoid="tolls")
+                else:
+                    result = gmaps.distance_matrix(origins=individual_location, destinations=[gym_location], mode='driving')
                 time = result['rows'][0]['elements'][0]['duration']['value']
                 times.append(time)
                 individual_times[individual] = convert_seconds_to_hms(time)
@@ -58,6 +67,10 @@ def home():
         return render_template('home.html', best_locations=best_locations)
 
     return render_template('home.html')
+
+@app.route('/help', methods=['GET'])
+def help():
+    return render_template('help.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

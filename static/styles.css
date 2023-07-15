@@ -44,20 +44,21 @@ input[type="text"]:focus {
     border-color: #6C63FF;
 }
 
-button, input[type="submit"] {
+button, input[type="submit"], input[type="button"], a {
     padding: 15px;
     margin-top: 10px;
-    border: none;
+    border: 2px solid #6C63FF;
     border-radius: 25px;
-    background-color: #6C63FF;
-    color: #FFFFFF;
-    transition: background-color 0.3s;
+    background-color: transparent;
+    color: #6C63FF;
+    transition: background-color 0.3s, color 0.3s;
     cursor: pointer;
     font-size: 1.2em;
 }
 
-button:hover, input[type="submit"]:hover {
-    background-color: #4a44ce;
+button:hover, input[type="submit"]:hover, input[type="button"]:hover, a:hover {
+    background-color: #6C63FF;
+    color: #FFFFFF;
 }
 
 h2 {
@@ -101,6 +102,125 @@ div[id^='individual'] {
 .card .score {
     color: #6C63FF;
     font-weight: bold;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    appearance: none;
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.checkbox-wrapper input[type="checkbox"]:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+    background-color: #6C63FF;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked:before {
+    transform: translateX(30px);
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.button-wrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.submit-help-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.help-button {
+    background-color: transparent;
+    color: #6C63FF;
+    border: 2px solid #6C63FF;
+    border-radius: 25px;
+    padding: 15px;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+    font-size: 1.2em;
+    text-align: center;
+    line-height: 1.2em; /* Adjust this based on the height of your button */
+}
+
+.help-button:hover {
+    background-color: #6C63FF;
+    color: #FFFFFF;
+}
+
+/* CSS rules for help.html */
+
+.help ul {
+    margin-top: 20px;
+}
+
+.help ul li {
+    margin-bottom: 10px;
+}
+
+.back-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6C63FF;
+    color: #FFF;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-size: 1.2em;
+    z-index: 1000;
+}
+
+.back-button:hover {
+    background-color: #4a44ce;
+}
+
+
+@media screen and (max-width: 768px) {
+    .button-wrapper, .submit-help-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .help-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 }
 
 @media screen and (max-width: 768px) {

@@ -9,6 +9,17 @@
     <div class="container">
         <h1>Find Closest Locations of Interest</h1>
         <form method="POST" id="myForm">
+            <div class="checkbox-wrapper">
+                <label for="toll">Avoid Tolls:</label>
+                <input type="checkbox" id="toll" name="toll">
+            </div>
+            
+            <div class="checkbox-wrapper">
+                <label for="toll">Avoid Highways:</label>
+                <input type="checkbox" id="toll" name="toll">
+            </div>   
+
+            
             <label for="apikey">API Key:</label>
             <input type="text" id="apikey" name="apikey" required>
 
@@ -19,10 +30,23 @@
                 <label for="individual1">Individual 1 Address:</label>
                 <input type="text" id="individual1" name="individual" required>
             </div>
-            
-            <button type="button" onclick="addInputField()">Add Individual</button>
-            <button type="button" onclick="removeInputField()">Remove Individual</button>
-            <input type="submit" value="Submit">
+
+            <div id="individual2">
+                <label for="individual2">Individual 2 Address:</label>
+                <input type="text" id="individual2" name="individual" required>
+            </div>
+
+                     
+
+            <div class="button-wrapper">
+                <button type="button" onclick="addInputField()">Add Individual</button>
+                <button type="button" onclick="removeInputField()">Remove Individual</button>
+            </div>
+
+            <div class="submit-help-wrapper">
+                <input type="submit" value="Submit">
+                <a href="/help" class="help-button">Help</a>
+            </div>
         </form>
 
         {% if best_locations %}
@@ -42,31 +66,31 @@
     </div>
 
     <script>
-        let individualCount = 2;
-    
+        let individualCount = 3;
+
         function addInputField() {
             const div = document.createElement('div');
             div.id = `individual${individualCount}`;
-    
+
             const label = document.createElement('label');
             label.setAttribute('for', `individual${individualCount}`);
             label.innerText = `Individual ${individualCount} Address:`;
-    
+
             const input = document.createElement('input');
             input.setAttribute('type', 'text');
             input.setAttribute('id', `individual${individualCount}`);
             input.setAttribute('name', 'individual');
-    
+
             div.appendChild(label);
             div.appendChild(input);
-    
-            document.getElementById('myForm').insertBefore(div, document.querySelector('button'));
-    
+
+            document.getElementById('myForm').insertBefore(div, document.querySelector('.button-wrapper'));
+
             individualCount++;
         }
-    
+
         function removeInputField() {
-            if (individualCount > 2) {
+            if (individualCount > 3) {
                 const div = document.getElementById(`individual${individualCount - 1}`);
                 div.parentNode.removeChild(div);
                 individualCount--;
