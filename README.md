@@ -2,7 +2,7 @@ GeoCentric is a Flask-based web application that utilizes the Google Maps API to
 
 This is perfect for friends, colleagues, or teams who are spread out geographically but want to find a common meeting spot that is fair in terms of travel time.
 
-The project is available at http://www.geocentric.pythonanywhere.com. The project can also be ran using the following instructions.
+The project is available at http://geocentric.pythonanywhere.com. The project can also be ran using the following instructions.
 
 Prerequisites
 - Python 3.8+
