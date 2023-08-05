@@ -47,6 +47,17 @@
                 <input type="submit" value="Submit">
                 <a href="/help" class="help-button">Help</a>
             </div>
+
+            <div class="auth-buttons">
+                {% if user %}
+                    <a href="/history" class="history-button">History</a>
+                    <a href="/logout" class="signout-button">Sign Out</a>
+                {% else %}
+                    <a href="/login" class="help-button">Sign In</a>
+                    <a href="/register" class="signin-button">Register</a>
+                {% endif %}
+            </div>
+
         </form>
 
         {% if best_locations %}

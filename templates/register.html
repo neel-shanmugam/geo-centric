@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+    <div class="container2">
+        <a href="/" class="home-button">Home</a>
+        <h1>Register</h1>
+        <form method="POST">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="submit" value="Register">
+        </form>
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+</body>
+</html>

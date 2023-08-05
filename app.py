@@ -1,10 +1,27 @@
-from flask import Flask, request, render_template
+# from flask import Flask, request, render_template
 from statistics import mean
 import googlemaps
 from geopy.distance import geodesic
 import itertools
+from flask import Flask, render_template, request, redirect, url_for
+import pyrebase
 
 app = Flask(__name__)
+
+firebaseConfig = {
+    "apiKey": "AIzaSyDnAhT2xI-U4HdExhBqLYmAoxB1zKTyY4w",
+    "authDomain": "geocentric-703b9.firebaseapp.com",
+    "databaseURL": "https://geocentric-703b9-default-rtdb.firebaseio.com/",
+    "projectId": "geocentric-703b9",
+    "storageBucket": "geocentric-703b9.appspot.com",
+    "messagingSenderId": "946418748546",
+    # "serviceAccount": "./templates/geocentric-703b9-firebase-adminsdk-xgpah-25d0707be7.json",
+    "appId": "1:946418748546:web:804c5b5281d6bee1c1789b"
+}
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+db = firebase.database()
 
 def calculate_distance(point1, point2):
     return geodesic((point1['lat'], point1['lng']), (point2['lat'], point2['lng'])).meters
@@ -54,6 +71,7 @@ def get_avoid_string(avoid_tolls, avoid_highways):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    user = auth.current_user
     if request.method == 'POST':
         apikey = request.form.get('apikey')
         central_location = request.form.get('place')
@@ -78,13 +96,72 @@ def home():
 
         best_locations = sorted(location_scores, key=lambda x: x[1])
 
-        return render_template('home.html', best_locations=best_locations)
+        if user:
+            # store the search in firestore
+            search_data = {
+                'user_id': user['localId'],
+                'apikey': apikey,
+                'central_location': central_location,
+                'individuals': individuals,
+                'avoid_tolls': avoid_tolls,
+                'avoid_highways': avoid_highways,
+                'best_locations': best_locations
+            }
+            db.child('searches').push(search_data)
 
-    return render_template('home.html')
+        return render_template('home.html', best_locations=best_locations, user=user)
+
+    return render_template('home.html', user=user)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        try:
+            auth.sign_in_with_email_and_password(email, password)
+            return redirect(url_for('home'))
+        except:
+            return render_template('login.html', message="Invalid credentials")
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        try:
+            auth.create_user_with_email_and_password(email, password)
+            return redirect(url_for('home'))
+        except:
+            return render_template('register.html', message="Unable to create account")
+    user = auth.current_user
+    return render_template('register.html', user=user)
+
+@app.route('/logout')
+def logout():
+    auth.current_user = None
+    user = auth.current_user
+    return redirect(url_for('home'))
+
+@app.route('/history', methods=['GET'])
+def history():
+    user = auth.current_user
+    if user:
+        # fetch the search history from firestore
+        all_searches = db.child('searches').get().val()
+        user_searches = [search for search in all_searches.values() if search['user_id'] == user['localId']]
+    else:
+        user_searches = []
+
+    return render_template('history.html', search_history=user_searches, user=user)
+
 
 @app.route('/help', methods=['GET'])
 def help():
-    return render_template('help.html')
+    user = auth.current_user
+    return render_template('help.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)
