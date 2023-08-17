@@ -18,8 +18,7 @@ git clone https://github.com/<username>/GeoCentric.git
 
 cd GeoCentric
 
-Install the required Python packages:
-pip install flask googlemaps
+Install the required Python packages.
 
 Run the Flask application:
 python3 app.py
