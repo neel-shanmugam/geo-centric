@@ -1,10 +1,11 @@
-# from flask import Flask, request, render_template
 from statistics import mean
 import googlemaps
 from geopy.distance import geodesic
 import itertools
 from flask import Flask, render_template, request, redirect, url_for
 import pyrebase
+from sklearn.cluster import DBSCAN
+
 
 app = Flask(__name__)
 
@@ -15,7 +16,6 @@ firebaseConfig = {
     "projectId": "geocentric-703b9",
     "storageBucket": "geocentric-703b9.appspot.com",
     "messagingSenderId": "946418748546",
-    # "serviceAccount": "./templates/geocentric-703b9-firebase-adminsdk-xgpah-25d0707be7.json",
     "appId": "1:946418748546:web:804c5b5281d6bee1c1789b"
 }
 
@@ -81,9 +81,17 @@ def home():
 
         gmaps = googlemaps.Client(key=apikey)
         individual_locations = get_individual_locations(gmaps, individuals)
+        locations_array = [[location['lat'], location['lng']] for location in individual_locations]
 
-        centroid_lat = mean([location['lat'] for location in individual_locations])
-        centroid_lng = mean([location['lng'] for location in individual_locations])
+        dbscan = DBSCAN(eps=0.01, min_samples=2)
+        clusters = dbscan.fit_predict(locations_array)
+
+        cluster_centroids = []
+        for cluster_label in set(clusters):
+            cluster_points = [locations_array[i] for i, label in enumerate(clusters) if label == cluster_label]
+            centroid_lat = mean([point[0] for point in cluster_points])
+            centroid_lng = mean([point[1] for point in cluster_points])
+            cluster_centroids.append({'lat': centroid_lat, 'lng': centroid_lng})
         centroid = {'lat': centroid_lat, 'lng': centroid_lng}
 
         max_distance = calculate_max_distance(individual_locations)
@@ -149,7 +157,6 @@ def logout():
 def history():
     user = auth.current_user
     if user:
-        # fetch the search history from firestore
         all_searches = db.child('searches').get().val()
         user_searches = [search for search in all_searches.values() if search['user_id'] == user['localId']]
     else:

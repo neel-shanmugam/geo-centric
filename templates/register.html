@@ -3,6 +3,7 @@
 <head>
     <title>Register</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+
 </head>
 <body>
     <div class="container2">
@@ -15,10 +16,10 @@
             <input type="password" id="password" name="password" required>
             <input type="submit" value="Register">
         </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
         {% if message %}
         <p>{{ message }}</p>
         {% endif %}
-        <p>Already have an account? <a href="/login">Login</a></p>
     </div>
 </body>
 </html>
